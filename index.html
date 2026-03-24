@@ -1,109 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neon Radio</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    color: #fff;
-    background: linear-gradient(270deg, #1a1a2e, #16213e, #0f3460, #533483);
-    background-size: 800% 800%;
-    animation: shiftColors 15s ease infinite;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LaunchForge — App to Build Apps, Games & Websites</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a34;
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --accent: #60a5fa;
+      --accent-2: #22d3ee;
+      --ok: #4ade80;
+      --warning: #f59e0b;
+      --danger: #f43f5e;
+      --border: #253156;
+    }
 
-  @keyframes shiftColors {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  .radio-container {
-    border: 3px solid white;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 0 25px white;
-    background: rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(8px);
-  }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 10% 10%, #1a2450 0%, var(--bg) 45%);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
 
-  h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    text-shadow: 0 0 15px white;
-  }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1rem;
+    }
 
-  .station-btn {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    font-size: 1.1em;
-    padding: 12px 25px;
-    border-radius: 12px;
-    margin: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    text-shadow: 0 0 10px white;
-  }
+    .hero,
+    .panel {
+      background: rgba(18, 26, 52, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem;
+      box-shadow: 0 14px 36px rgba(3, 8, 25, 0.45);
+    }
 
-  .station-btn:hover {
-    background: white;
-    color: #111;
-    box-shadow: 0 0 25px white;
-  }
+    h1,
+    h2,
+    h3 {
+      margin: 0 0 0.5rem 0;
+    }
 
-  .note {
-    font-size: 0.9em;
-    margin-top: 15px;
-    opacity: 0.9;
-  }
+    h1 {
+      font-size: clamp(1.45rem, 3vw, 2.2rem);
+    }
 
-  .nowplaying {
-    margin-top: 12px;
-    font-size: 1em;
-    text-shadow: 0 0 10px white;
-  }
-</style>
+    .muted {
+      color: var(--muted);
+      margin: 0.25rem 0;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.75rem;
+    }
+
+    .tab-btn,
+    button,
+    .chip {
+      border: 1px solid var(--border);
+      background: #1a2447;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.55rem 0.8rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .tab-btn.active,
+    .chip.active,
+    button.primary {
+      background: linear-gradient(140deg, var(--accent), var(--accent-2));
+      color: #04111f;
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 0.8rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      color: #c7d2fe;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f1731;
+      color: var(--text);
+      padding: 0.65rem;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.7rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+    }
+
+    @media (min-width: 900px) {
+      .split {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .preview {
+      background: #0a1228;
+      border: 1px dashed #33487f;
+      border-radius: 12px;
+      padding: 0.8rem;
+      min-height: 250px;
+    }
+
+    .file-list {
+      margin: 0;
+      padding-left: 1rem;
+      display: grid;
+      gap: 0.35rem;
+      color: #bfdbfe;
+    }
+
+    .log {
+      margin-top: 0.75rem;
+      border-radius: 10px;
+      background: #0a132d;
+      border: 1px solid #223562;
+      padding: 0.6rem;
+      font-size: 0.9rem;
+    }
+
+    .log.ok { border-color: #1f6f45; color: #bbf7d0; }
+    .log.warn { border-color: #915f11; color: #fde68a; }
+
+    .publish-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.8rem;
+      background: #0e1734;
+      display: grid;
+      gap: 0.45rem;
+    }
+
+    .publish-card ul {
+      margin: 0;
+      padding-left: 1rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="radio-container">
-    <h1>🎧 Neon Radio</h1>
+  <main class="wrap">
+    <section class="hero">
+      <h1>🚀 LaunchForge</h1>
+      <p class="muted">An app to make <strong>apps, games, and websites</strong> — and guide you to publish each one correctly.</p>
+      <p class="muted">Pick a project type, generate a starter kit, preview your structure, and follow platform-specific publish steps.</p>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="builder">Builder</button>
+        <button class="tab-btn" data-tab="publisher">Publisher</button>
+      </div>
+    </section>
 
-    <button class="station-btn" onclick="playStation('https://ice1.somafm.com/beatblender-128-mp3','SomaFM - Beat Blender')">Play Beat Blender</button>
-    <button class="station-btn" onclick="playStation('https://ice1.somafm.com/groovesalad-128-mp3','SomaFM - Groove Salad')">Play Groove Salad</button>
-    <button class="station-btn" onclick="playStation('https://ice2.somafm.com/lush-128-mp3','SomaFM - Lush')">Play Lush Ambient</button>
-    <button class="station-btn" onclick="playStation('https://stream-55.zeno.fm/f5z6f2a1qg0uv','Kerala FM')">Play Kerala FM</button>
+    <section id="builder" class="panel tab-panel">
+      <h2>Project Builder</h2>
+      <div class="grid">
+        <div>
+          <label for="projectType">Project type</label>
+          <select id="projectType">
+            <option value="website">Website</option>
+            <option value="game">Game</option>
+            <option value="app">App</option>
+          </select>
+        </div>
+        <div>
+          <label for="projectName">Project name</label>
+          <input id="projectName" placeholder="My Next Big Thing" value="My Next Big Thing" />
+        </div>
+        <div>
+          <label for="target">Target platform</label>
+          <select id="target"></select>
+        </div>
+        <div>
+          <label for="stack">Stack</label>
+          <select id="stack"></select>
+        </div>
+      </div>
 
-    <p class="nowplaying" id="nowPlaying">Not playing</p>
-    <p class="note">If a song keeps playing after you change stations, tap again to refresh playback.</p>
-  </div>
+      <div style="margin-top: 0.8rem;">
+        <label for="description">What does it do?</label>
+        <textarea id="description" placeholder="Describe your idea briefly">A creator studio where anyone can spin up apps, games, and websites quickly.</textarea>
+      </div>
 
-  <audio id="radioPlayer"></audio>
+      <div class="actions">
+        <button class="primary" id="generateBtn">Generate Starter</button>
+        <button id="downloadPlanBtn">Download Build Plan (.txt)</button>
+      </div>
+
+      <div class="split" style="margin-top: 0.85rem;">
+        <div class="preview">
+          <h3>Starter Files</h3>
+          <ul class="file-list" id="fileList"></ul>
+        </div>
+        <div class="preview">
+          <h3>Quick Start</h3>
+          <ol id="quickStart" class="file-list"></ol>
+        </div>
+      </div>
+
+      <div id="builderLog" class="log hidden"></div>
+    </section>
+
+    <section id="publisher" class="panel tab-panel hidden">
+      <h2>Publish Assistant</h2>
+      <p class="muted">Choose a category to get publishing routes and checklists.</p>
+      <div class="tabs" id="publishTypeChips">
+        <button class="chip active" data-type="website">Website</button>
+        <button class="chip" data-type="game">Game</button>
+        <button class="chip" data-type="app">App</button>
+      </div>
+      <div class="grid" style="margin-top: 0.8rem;" id="publishCards"></div>
+      <div id="publishLog" class="log warn">Tip: verify platform fees and policy updates before submission.</div>
+    </section>
+  </main>
 
   <script>
-    const player = document.getElementById('radioPlayer');
-    const nowPlaying = document.getElementById('nowPlaying');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
 
-    function playStation(url, name) {
-      player.pause();
-      player.src = url;
-      player.load();
-      player.play()
-        .then(() => {
-          nowPlaying.textContent = "Now Playing: " + name;
-        })
-        .catch(() => {
-          alert('Tap again to start playback.');
-        });
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.dataset.tab;
+        panels.forEach((panel) => panel.classList.toggle('hidden', panel.id !== tab));
+      });
+    });
+
+    const projectType = document.getElementById('projectType');
+    const target = document.getElementById('target');
+    const stack = document.getElementById('stack');
+    const projectName = document.getElementById('projectName');
+    const description = document.getElementById('description');
+    const fileList = document.getElementById('fileList');
+    const quickStart = document.getElementById('quickStart');
+    const builderLog = document.getElementById('builderLog');
+
+    const catalog = {
+      website: {
+        targets: ['Web Browser', 'Static Hosting', 'PWA'],
+        stacks: ['HTML/CSS/JS', 'React', 'Next.js'],
+        files: ['index.html', 'styles.css', 'app.js', 'README.md', '.gitignore'],
+        steps: ['Open the folder in VS Code.', 'Install dependencies if using a framework.', 'Run locally and test responsive layout.', 'Push to GitHub and deploy to hosting provider.']
+      },
+      game: {
+        targets: ['Desktop', 'WebGL', 'Mobile'],
+        stacks: ['Phaser', 'Unity', 'Godot'],
+        files: ['game-design.md', 'assets/', 'src/main.js', 'src/scenes/Boot.js', 'README.md'],
+        steps: ['Create game loop and input controls.', 'Add placeholder sprites/audio.', 'Test difficulty and performance.', 'Build export (WebGL/Desktop/Mobile) and publish.']
+      },
+      app: {
+        targets: ['Android', 'iOS', 'Cross-platform'],
+        stacks: ['Flutter', 'React Native', 'Kotlin/Swift'],
+        files: ['app-spec.md', 'src/', 'components/', 'services/api.js', 'README.md'],
+        steps: ['Set app ID and environment configs.', 'Implement core screens/features.', 'Run device/emulator tests.', 'Build release artifacts and submit to app stores.']
+      }
+    };
+
+    const publishGuides = {
+      website: [
+        {
+          platform: 'GitHub Pages',
+          bullets: ['Best for static sites and portfolios.', 'Connect repository and enable Pages.', 'Set custom domain with DNS if needed.']
+        },
+        {
+          platform: 'Netlify / Vercel',
+          bullets: ['Best for modern frameworks.', 'Auto-build on git push.', 'Use preview deployments before production.']
+        }
+      ],
+      game: [
+        {
+          platform: 'itch.io',
+          bullets: ['Fast indie game publishing.', 'Upload HTML5 build or downloadable binaries.', 'Set game page media and pricing options.']
+        },
+        {
+          platform: 'Steam',
+          bullets: ['Create Steamworks account and app entry.', 'Prepare store capsule art and trailer.', 'Pass review checklist before launch.']
+        }
+      ],
+      app: [
+        {
+          platform: 'Google Play',
+          bullets: ['Sign release AAB/APK.', 'Complete Data Safety and content rating.', 'Roll out staged release after review.']
+        },
+        {
+          platform: 'Apple App Store',
+          bullets: ['Use App Store Connect.', 'Provide privacy labels and screenshots.', 'Submit for TestFlight then App Review.']
+        }
+      ]
+    };
+
+    function fillOptions() {
+      const type = projectType.value;
+      const data = catalog[type];
+      target.innerHTML = data.targets.map((t) => `<option>${t}</option>`).join('');
+      stack.innerHTML = data.stacks.map((s) => `<option>${s}</option>`).join('');
+      renderStarter();
     }
+
+    function renderStarter() {
+      const type = projectType.value;
+      const data = catalog[type];
+      fileList.innerHTML = data.files.map((file) => `<li>${file}</li>`).join('');
+      quickStart.innerHTML = data.steps.map((step) => `<li>${step}</li>`).join('');
+    }
+
+    function showBuilderLog(message, mode = 'ok') {
+      builderLog.textContent = message;
+      builderLog.classList.remove('hidden', 'ok', 'warn');
+      builderLog.classList.add(mode);
+    }
+
+    function downloadText(filename, content) {
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function buildPlanText() {
+      const type = projectType.value;
+      const data = catalog[type];
+      return [
+        `LaunchForge Build Plan`,
+        `Project Name: ${projectName.value.trim() || 'Untitled Project'}`,
+        `Type: ${type}`,
+        `Target: ${target.value}`,
+        `Stack: ${stack.value}`,
+        `Description: ${description.value.trim()}`,
+        '',
+        'Starter Files:',
+        ...data.files.map((f) => `- ${f}`),
+        '',
+        'Quick Start Steps:',
+        ...data.steps.map((s, i) => `${i + 1}. ${s}`),
+        '',
+        'Publishing (recommended):',
+        ...publishGuides[type].map((guide) => `- ${guide.platform}`)
+      ].join('\n');
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      renderStarter();
+      showBuilderLog(`Starter generated for ${projectName.value || 'your project'} (${projectType.value.toUpperCase()}).`, 'ok');
+    });
+
+    document.getElementById('downloadPlanBtn').addEventListener('click', () => {
+      const safeName = (projectName.value || 'project').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      downloadText(`${safeName}-build-plan.txt`, buildPlanText());
+      showBuilderLog('Build plan downloaded. You can now start coding and publish with the Publisher tab.', 'ok');
+    });
+
+    projectType.addEventListener('change', fillOptions);
+
+    const publishCards = document.getElementById('publishCards');
+    const publishChips = document.querySelectorAll('#publishTypeChips .chip');
+
+    function renderPublishCards(type) {
+      publishCards.innerHTML = publishGuides[type].map((item) => `
+        <article class="publish-card">
+          <h3>${item.platform}</h3>
+          <ul>
+            ${item.bullets.map((b) => `<li>${b}</li>`).join('')}
+          </ul>
+        </article>
+      `).join('');
+    }
+
+    publishChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        publishChips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderPublishCards(chip.dataset.type);
+      });
+    });
+
+    fillOptions();
+    renderPublishCards('website');
   </script>
 </body>
 </html>
